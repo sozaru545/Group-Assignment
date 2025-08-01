@@ -1,0 +1,11 @@
+.pageContainer {
+  padding: 2rem;
+  background-color: #fafafa;
+}
+
+.mainContent {
+  max-width: 800px;
+  margin: auto;
+  font-size: 1.2rem;
+  color: #333;
+}
