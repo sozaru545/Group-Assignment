@@ -11,6 +11,24 @@
     • `ShuffleButton` An onShuffle prop is passed down to activate the lyric randomizer.
 
 
+  #  Group Assignment — Lyric Shuffle Web App
+
+This is a collaborative React project that randomly displays song lyrics and artist information from a custom data set. Users can explore lyrics from popular songs across different genres with a clean, styled interface.
+
+##  Features
+- Displays lyrics from artists like Queen, Michael Jackson, and Led Zeppelin
+- Random shuffle button to explore new lyrics
+- Modular CSS styling for a responsive UI
+- Component-based architecture (e.g., `Navbar`, `LyricCard`, `ShuffleButton`)
+- Search and navigation-ready with planned routing integration
+
+---
+
+##  Project Structure
+
+
+
+
 
 
     
