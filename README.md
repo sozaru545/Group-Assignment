@@ -11,6 +11,16 @@
     • `ShuffleButton` An onShuffle prop is passed down to activate the lyric randomizer.
 
 
+## Julian – State Management 
+
+- Built a global context using React Context API
+- Created `useRandomLyric` custom hook
+- Created `useSearch` custom hook
+- Implemented mock API service
+
+
+
+
 
 
     
