@@ -1,28 +1,27 @@
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './pages/index';
-import Random from './pages/Random';
-import Search from './pages/search';
-import About from './pages/about';
-import SongDetail from './pages/SongDetail';
-import ArtistDetail from './pages/ArtistDetail';
-import NotFound from './pages/NotFound'; 
+import { Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import Home from './views/index'
+import Random from './views/Random'
+import Search from './views/search'
+import About from './views/about'
+import SongDetail from './views/SongDetail'
+import ArtistDetail from './views/ArtistDetail'
+import NotFound from './views/NotFound'
 
 function App() {
   return (
-    <>
-      <Navbar />
+    <Layout>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/random" element={<Random />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/song/:id" element={<SongDetail />} />
+        <Route path="/"              element={<Home />} />
+        <Route path="/random"        element={<Random />} />
+        <Route path="/search"        element={<Search />} />
+        <Route path="/about"         element={<About />} />
+        <Route path="/song/:id"      element={<SongDetail />} />
         <Route path="/artist/:artistName" element={<ArtistDetail />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*"              element={<NotFound />} />
       </Routes>
-    </>
-  );
+    </Layout>
+  )
 }
 
-export default App;
+export default App
