@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* full viewport height */
+}
+
+.main {
+  flex: 1;             /* take up all remaining space */
+  padding: 2rem;
+  background-color: #eef6ff; /* light-blue background to match your header */
+}
