@@ -1,32 +1,102 @@
+/* NEW: sticky wrapper using theme tokens */
+.wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+/* keep your existing .navbar rules but make padding fluid */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: #1a1a2e;
-  color: white;
+  padding: clamp(.5rem, 1.2vw, 1rem) clamp(1rem, 3vw, 2rem);
+  background: var(--card);
+  color: var(--text);
 }
 
+/* logo scales nicely */
 .logo {
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, .6vw + 1rem, 1.5rem);
   font-weight: bold;
+  color: var(--text);
+  margin: 0;
 }
 
+/* links */
 .navLinks {
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
+  gap: clamp(.5rem, 1.2vw, 1.25rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-a {
-  color: white;
+.navLinks a {
+  color: var(--link);
   text-decoration: none;
   font-weight: 500;
+  padding: .35rem .25rem;         /* better tap target */
+  display: inline-block;
 }
 
-a:hover {
-  text-decoration: underline;
+.navLinks a:hover { text-decoration: underline; }
+
+.active { border-bottom: 2px solid var(--accent); }
+
+/* RIGHT SIDE (toggle + hamburger) */
+.right { display: flex; align-items: center; gap: .75rem; }
+
+/* Hamburger button (hidden on desktop) */
+.menuBtn {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.active {
-  border-bottom: 2px solid #fff;
+.bar {
+  width: 20px;
+  height: 2px;
+  background: var(--text);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .menuBtn { display: inline-flex; }
+
+  /* turn list into dropdown sheet */
+  .navLinks {
+    position: absolute;
+    inset: calc(100% + 1px) 0 auto 0;  /* below navbar */
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: .5rem clamp(16px, 4vw, 32px) .75rem;
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease;
+  }
+
+  .navLinks li { padding: .4rem 0; }
+  .navLinks a { display: block; }
+
+  /* toggled open state */
+  .open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
