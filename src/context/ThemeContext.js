@@ -1,20 +1,54 @@
 // context/ThemeContext.js
-import { createContext, useState, useContext } from "react";
+import { createContext, useContext, useState } from 'react';
 
+// Create the context
 const ThemeContext = createContext();
 
+// Custom hook to use the theme context
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    // Return a default implementation if not wrapped in provider
+    // This prevents errors when components use useTheme without provider
+    return {
+      theme: 'light',
+      setTheme: () => {},
+      isLoading: false,
+      setIsLoading: () => {}
+    };
+  }
+  return context;
+};
+
+// Theme Provider component
 export const ThemeProvider = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    // Get initial theme from localStorage or default to 'light'
+    const saved = localStorage.getItem('theme');
+    return saved || 'light';
+  });
+  
   const [isLoading, setIsLoading] = useState(false);
 
-  const toggleTheme = () => setDarkMode(!darkMode);
+  // Update theme and save to localStorage
+  const updateTheme = (newTheme) => {
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
+  const value = {
+    theme,
+    setTheme: updateTheme,
+    isLoading,
+    setIsLoading
+  };
 
   return (
-    <ThemeContext.Provider value={{ darkMode, toggleTheme, isLoading, setIsLoading }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
-export const useTheme = () => useContext(ThemeContext);
-
+export default ThemeContext;

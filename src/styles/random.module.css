@@ -1,8 +1,65 @@
+/* styles/random.module.css */
 .page {
-  text-align: center;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 2em;
+  padding: 2em 0;
 }
 
 .shuffleButton {
-  margin-top: 1rem;
+  margin-top: 1em;
+}
+
+.shuffleButton button {
+  padding: 0.75em 2em;
+  font-size: 1.1em;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.shuffleButton button:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.shuffleButton button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.songInfo {
+  text-align: center;
+  padding: 1em;
+  background: var(--card);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.songInfo p {
+  margin: 0.5em 0;
+}
+
+.notice {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 8px;
+  padding: 0.5em 1em;
+  text-align: center;
+}
+
+.notice small {
+  color: var(--text);
+  opacity: 0.8;
+}
+
+/* Dark mode adjustments */
+html[data-theme='dark'] .notice {
+  background: rgba(251, 191, 36, 0.05);
+  border-color: rgba(251, 191, 36, 0.2);
 }

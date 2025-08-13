@@ -1,9 +1,23 @@
+/* styles/ErrorDisplay.module.css */
 .error {
-  padding: 0.75rem 1rem;
-  background-color: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
-  border-radius: 4px;
-  font-size: 0.95rem;
-  margin: 1rem 0;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 1em;
+  margin: 1em 0;
+  color: var(--text);
+}
+
+.error strong {
+  color: rgb(220, 38, 38);
+}
+
+/* Dark mode support */
+html[data-theme='dark'] .error {
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+html[data-theme='dark'] .error strong {
+  color: rgb(248, 113, 113);
 }
