@@ -1,5 +1,6 @@
-import { Routes, Route } from 'react-router-dom'
-import Layout from './components/Layout'
+import { Routes, Route } from 'react-router-dom' // React Router imports for client-side routing
+import Layout from './components/Layout' // Layout wrapper that contains navbar
+// Page components
 import Home from './views/index'
 import Random from './views/Random'
 import Search from './views/search'

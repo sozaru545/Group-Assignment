@@ -7,9 +7,14 @@ import ErrorDisplay from '../components/ErrorDisplay';
 import { mockLyrics } from '../utils/mockData';
 
 export default function SearchPage() {
+  // React Router hooks for URL management
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Parse query parameter from URL (for example: /search?q=adele)
   const params = new URLSearchParams(location.search);
+
+  // State management
   const [query, setQuery] = useState(params.get('q') || '');
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +27,7 @@ export default function SearchPage() {
     }
   }, [location.search]);
 
+  // Main search function that handles API call and fallbacks
   const performSearch = async (searchQuery) => {
     if (!searchQuery.trim()) {
       setResults([]);
@@ -33,15 +39,16 @@ export default function SearchPage() {
     setIsUsingMockData(false);
 
     try {
-      // Try to search using LRClib API directly
+      // API call to lrclib using template literal to build a URL with the search query
       const searchUrl = `https://lrclib.net/api/search?q=${encodeURIComponent(searchQuery)}`;
       const response = await fetch(searchUrl);
       
+      // check if the request was successful
       if (response.ok) {
         const data = await response.json();
         
         if (data && data.length > 0) {
-          // Remove duplicates based on artist + track combination
+          // logic that removes duplicates in search results based on artist + track combination
           const uniqueTracks = [];
           const seen = new Set();
           
@@ -66,7 +73,7 @@ export default function SearchPage() {
                 lyricSnippet = lyricSnippet.substring(0, 150) + '...';
               }
             } else if (item.syncedLyrics) {
-              // Remove timestamps from synced lyrics
+              // Logic that removes timestamps from synced lyrics
               const cleanLyrics = item.syncedLyrics.replace(/\[\d{2}:\d{2}\.\d{2}\]/g, '').trim();
               const lines = cleanLyrics.split('\n').filter(line => line.trim());
               lyricSnippet = lines.slice(0, 2).join(' / ');
@@ -75,6 +82,7 @@ export default function SearchPage() {
               }
             }
             
+            // Return normalized data object
             return {
               id: item.id || Date.now() + Math.random(),
               lyric: lyricSnippet,
@@ -96,9 +104,10 @@ export default function SearchPage() {
         throw new Error('API request failed');
       }
     } catch (apiError) {
+      // If API fails then fall back to mock data
       console.warn('API search failed, using mock data:', apiError.message);
       
-      // Fallback to mock data search
+      // Search through local mock data checking artist name, song title and lyrics
       const filtered = mockLyrics.filter(
         item => 
           item.artist.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -109,13 +118,16 @@ export default function SearchPage() {
       setResults(filtered);
       setIsUsingMockData(true);
     } finally {
+      // Always turn off loading state at the end
       setIsLoading(false);
     }
   };
 
+  // Handle form submission
   const handleSearch = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent page refresh
     if (query.trim()) {
+      // Updates the URL with the search query
       navigate(`/search?q=${encodeURIComponent(query)}`);
     }
   };
@@ -126,11 +138,13 @@ export default function SearchPage() {
     if (error) setError(null);
   };
 
+  // Render the UI
   return (
     <div className="page-container">
       <main className="main-content">
         <h1>Search Mode</h1>
         
+        {/* Offline notice if using mock data */}
         {isUsingMockData && results.length > 0 && (
           <div style={{ 
             padding: '0.5em', 
@@ -142,6 +156,7 @@ export default function SearchPage() {
           </div>
         )}
         
+        {/* SEARCH FORM */}
         <form onSubmit={handleSearch} style={{ marginBottom: '2em' }}>
           <div style={{ display: 'flex', gap: '0.5em' }}>
             <input
@@ -150,7 +165,7 @@ export default function SearchPage() {
               value={query}
               onChange={handleInputChange}
               style={{
-                flex: 1,
+                flex: 1, // Take remaining space
                 padding: '0.75em',
                 fontSize: '1em',
                 border: '1px solid var(--border)',
@@ -178,8 +193,10 @@ export default function SearchPage() {
           </div>
         </form>
         
+        {/* Error display */}
         {error && <ErrorDisplay message={error} />}
         
+        {/* Loading skeletons */}
         {isLoading && (
           <div className="results">
             <LoadingSkeleton height="100px" style={{ marginBottom: '1em' }} />
@@ -188,10 +205,12 @@ export default function SearchPage() {
           </div>
         )}
         
+        {/* No results message */}
         {!isLoading && query && results.length === 0 && (
           <p>No results found for "{query}". Try searching for different artists or songs.</p>
         )}
         
+        {/* SEARCH RESULTS */}
         {!isLoading && results.length > 0 && (
           <div className="results">
             <p style={{ marginBottom: '1em' }}>
@@ -199,10 +218,13 @@ export default function SearchPage() {
             </p>
             {results.map(item => (
               <div key={item.id} style={{ marginBottom: '1.5em' }}>
+                {/* Display each result as a card */}
                 <LyricCard 
                   lyric={item.lyric}
+                  // Format: Artist - "Song Title"
                   artist={`${item.artist} - "${item.song}"`}
                 />
+                {/* Additional metadata below card */}
                 {item.album && item.album !== 'Unknown Album' && (
                   <small style={{ 
                     display: 'block', 
@@ -211,6 +233,7 @@ export default function SearchPage() {
                     paddingLeft: '1em'
                   }}>
                     Album: {item.album}
+                    {/* Format duration as MM:SS if available */}
                     {item.duration && ` • ${Math.floor(item.duration / 60)}:${(item.duration % 60).toString().padStart(2, '0')}`}
                   </small>
                 )}
